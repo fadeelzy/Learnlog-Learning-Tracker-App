@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnLog - Track Your Learning Journey</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="landing-container">
+        <!-- Hero Section -->
+        <div class="landing-hero">
+            <div class="landing-logo">
+                <img src="{% static 'learnlog.png' %}" alt="LearnLog Logo" class="logo-img">
+                <h1 class="landing-title">LearnLog</h1>
+            </div>
+            <p class="landing-subtitle">Track Your Learning Journey</p>
+            <p class="landing-description">Organize, monitor, and complete your learning resources efficiently</p>
+        </div>
+
+        <!-- Auth Forms Section -->
+        <div class="auth-section">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Sign In</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form-container" id="loginForm">
+                <form id="loginFormElement" class="auth-form" method="POST" action="{% url 'login_user' %}">
+                    {% csrf_token %}
+                    <div id="loginError" class="alert alert-error hidden"></div>
+
+                    <div class="form-group">
+                        <label for="loginEmail" class="form-label">Email</label>
+                        <input 
+                            type="email" 
+                            id="loginEmail"
+                            name="loginEmail"
+                            class="form-input" 
+                            placeholder="Enter your email"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="loginPassword"
+                                name="loginPassword"
+                                class="form-input" 
+                                placeholder="Enter your password"
+                                required
+                            >
+                            <button type="button" class="password-toggle" onclick="togglePassword('loginPassword', 'loginToggleIcon')">
+                                <span id="loginToggleIcon"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="loginButton" class="btn btn-primary btn-full">
+                        Sign In
+                    </button>
+
+                    <div class="demo-instructions">
+                        <p>Founder: Fadilah Abdulkadir – Intermediate Frontend developer | Backend Engineer | AWS Cloud Solutions Architect | Site Reliability Engineer.</p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="auth-form-container hidden" id="signupForm">
+                <form id="signupFormElement" class="auth-form" method="POST" action="{% url 'signup_user' %}">
+                    {% csrf_token %}
+                    <div id="signupError" class="alert alert-error hidden"></div>
+
+                    <div class="form-group">
+                        <label for="signupName" class="form-label">Full Name</label>
+                        <input 
+                            type="text" 
+                            id="signupName" 
+                            name="signupName"
+                            class="form-input" 
+                            placeholder="Enter your full name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupEmail" class="form-label">Email</label>
+                        <input 
+                            type="email" 
+                            id="signupEmail" 
+                            name="signupEmail"
+                            class="form-input" 
+                            placeholder="Enter your email"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupPassword" class="form-label">Password</label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="signupPassword" 
+                                name="signupPassword"
+                                class="form-input" 
+                                placeholder="Create a password"
+                                required
+                            >
+                            <button type="button" class="password-toggle" onclick="togglePassword('signupPassword', 'signupToggleIcon')">
+                                <span id="signupToggleIcon"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupPasswordConfirm" class="form-label">Confirm Password</label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="signupPasswordConfirm" 
+                                name="signupPasswordConfirm"
+                                class="form-input" 
+                                placeholder="Confirm your password"
+                                required
+                            >
+                            <button type="button" class="password-toggle" onclick="togglePassword('signupPasswordConfirm', 'signupConfirmToggleIcon')">
+                                <span id="signupConfirmToggleIcon"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="signupButton" class="btn btn-primary btn-full">
+                        Create Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Tab switch between login/signup
+    const tabs = document.querySelectorAll('.auth-tab');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            const selectedTab = tab.getAttribute('data-tab');
+            if (selectedTab === 'login') {
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+            } else {
+                signupForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+        });
+    });
+
+    // Password toggle function
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            icon.textContent = '';
+        }
+    }
+    </script>
+</body>
+</html>

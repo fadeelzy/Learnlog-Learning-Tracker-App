@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Resource - LearnLog</title>
+    <meta name="description" content="Add a new learning resource to track your progress in LearnLog. Add books, courses, or tutorials.">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'dashboard' %}" class="logo">
+                <img src="{% static 'learnlog.png' %}" alt="LearnLog Logo" style="width: 2rem; height: 2rem;">
+                <span class="logo-text">LearnLog</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="{% url 'dashboard' %}" class="btn btn-ghost">Dashboard</a>
+                <a href="{% url 'add_resource' %}" class="btn btn-ghost">Add Resource</a>
+                <div class="nav-user">
+                    <span>👤 {{ request.user.first_name|default:request.user.username }}</span>
+                    <form action="{% url 'logout_user' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline btn-sm">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container" style="padding-top: 2rem; padding-bottom: 2rem; max-width: 800px;">
+        <!-- Header -->
+        <div class="detail-header">
+            <a href="{% url 'dashboard' %}" class="btn btn-ghost back-button">
+                ← Back to Dashboard
+            </a>
+            
+            <h1 class="dashboard-title">Add New Resource</h1>
+            <p class="dashboard-subtitle">
+                Add a book, course, or tutorial to track your learning progress.
+            </p>
+        </div>
+
+        <!-- Django messages -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Form -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Resource Details</h2>
+                <p class="card-description">
+                    Enter the information about what you're learning.
+                </p>
+            </div>
+            <div class="card-content">
+                <form id="addResourceForm" class="space-y-6" method="POST" action="{% url 'add_resource' %}">
+                    {% csrf_token %}
+
+                    <!-- Title -->
+                    <div class="form-group">
+                        <label for="title" class="form-label">Title *</label>
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            class="form-input"
+                            placeholder="e.g., React: The Complete Guide, Clean Code, JavaScript Fundamentals"
+                            required
+                        >
+                    </div>
+
+                    <!-- Category -->
+                    <div class="form-group">
+                        <label for="category" class="form-label">Category *</label>
+                        <select id="category" name="category" class="form-select" required>
+                            <option value="">Select a category</option>
+                            <option value="book">📚 Book</option>
+                            <option value="course">🎓 Course</option>
+                            <option value="tutorial">▶️ Tutorial</option>
+                        </select>
+                    </div>
+
+                    <!-- Initial Progress -->
+                    <div class="form-group">
+                        <label class="form-label">Initial Progress: <span id="progressValue">0</span>%</label>
+                        <div class="progress-slider-container">
+                            <input
+                                type="range"
+                                id="progress"
+                                name="progress"
+                                min="0"
+                                max="100"
+                                value="0"
+                                class="slider w-full"
+                                oninput="updateProgressDisplay()"
+                            >
+                        </div>
+                        <div class="slider-labels">
+                            <span>Not started (0%)</span>
+                            <span>Completed (100%)</span>
+                        </div>
+                    </div>
+
+                    <!-- Submit Buttons -->
+                    <div class="progress-actions" style="padding-top: 1rem;">
+                        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" id="submitButton" class="btn btn-primary">
+                            Add Resource
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    // Updates displayed progress value as user moves the slider
+    function updateProgressDisplay() {
+        const slider = document.getElementById("progress");
+        const valueDisplay = document.getElementById("progressValue");
+        valueDisplay.textContent = slider.value;
+    }
+    </script>
+</body>
+</html>

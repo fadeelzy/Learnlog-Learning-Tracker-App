@@ -1,0 +1,48 @@
+# --- PYTHON ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- ENVIRONMENT & DEPENDENCIES ---
+.env
+venv/
+env/
+*.env
+Pipfile
+Pipfile.lock
+
+# --- DJANGO / DATABASE ---
+db.sqlite3
+*.log
+*.pot
+*.pyc
+media/
+staticfiles/
+static_root/
+local_settings.py
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# --- COVERAGE / TESTING ---
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# --- MISC ---
+*.bak
+*.tmp
+*.orig
+*.old

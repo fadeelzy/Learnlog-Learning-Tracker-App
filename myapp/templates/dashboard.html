@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - LearnLog</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'dashboard' %}" class="logo">
+                <img src="{% static 'learnlog.png' %}" alt="LearnLog Logo" style="width: 2rem; height: 2rem;">
+                <span class="logo-text">LearnLog</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="{% url 'dashboard' %}" class="btn btn-ghost">Dashboard</a>
+                <a href="{% url 'add_resource' %}" class="btn btn-ghost">Add Resource</a>
+                <div class="nav-user">
+                    <span>👤 {{ request.user.first_name|default:request.user.username }}</span>
+                    <form action="{% url 'logout_user' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline btn-sm">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+        <!-- Welcome Header -->
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Welcome back, {{ request.user.first_name|default:request.user.username }} 👋</h1>
+            <p class="dashboard-subtitle">Track your learning progress and achieve your goals.</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Resources</span>
+                    <span class="stat-icon">📚</span>
+                </div>
+                <div class="stat-value">{{ stats.totalResources }}</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Completed</span>
+                    <span class="stat-icon" style="color: var(--success-color);">✅</span>
+                </div>
+                <div class="stat-value">{{ stats.completedResources }}</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">In Progress</span>
+                    <span class="stat-icon" style="color: var(--warning-color);">⏳</span>
+                </div>
+                <div class="stat-value">{{ stats.inProgressResources }}</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Average Progress</span>
+                    <span class="stat-icon">📈</span>
+                </div>
+                <div class="stat-value">{{ stats.averageProgress }}%</div>
+                <div style="margin-top: 0.5rem;">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ stats.averageProgress }}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="section-header">
+            <h2 class="section-title">Your Learning Resources</h2>
+            <a href="{% url 'add_resource' %}" class="btn btn-primary">
+                ➕ Add Resource
+            </a>
+        </div>
+
+        <!-- Resources Grid -->
+        <div id="resourcesContainer">
+            {% if resources %}
+                <div class="resources-grid">
+                    {% for resource in resources %}
+                        <div class="resource-card">
+                            <div class="resource-header">
+                                <h3 class="resource-title">{{ resource.title }}</h3>
+                                <span class="resource-category">{{ resource.category|title }}</span>
+                            </div>
+                            <div class="resource-body">
+                                <p>Progress: {{ resource.progress }}%</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: {{ resource.progress }}%;"></div>
+                                </div>
+                            </div>
+                            <div class="resource-footer">
+                                <a href="{% url 'resource_detail' resource.id %}" class="btn btn-outline btn-sm">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">📚</div>
+                    <h3 class="empty-title">No learning resources yet</h3>
+                    <p class="empty-description">Start your learning journey by adding your first resource.</p>
+                    <a href="{% url 'add_resource' %}" class="btn btn-primary">Add Your First Resource</a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

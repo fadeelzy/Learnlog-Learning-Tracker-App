@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ resource.title }} - LearnLog</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'dashboard' %}" class="logo">
+                <img src="{% static 'learnlog.png' %}" alt="LearnLog Logo" style="width: 2rem; height: 2rem;">
+                <span class="logo-text">LearnLog</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="{% url 'dashboard' %}" class="btn btn-ghost">Dashboard</a>
+                <a href="{% url 'add_resource' %}" class="btn btn-ghost">Add Resource</a>
+                <div class="nav-user">
+                    <span>👤 {{ request.user.first_name|default:request.user.username }}</span>
+                    <form action="{% url 'logout_user' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline btn-sm">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+        <!-- Header -->
+        <div class="detail-header">
+            <a href="{% url 'dashboard' %}" class="btn btn-ghost back-button">← Back to Dashboard</a>
+        </div>
+
+        <!-- Resource Detail Content -->
+        <div class="detail-grid">
+            <!-- Left: Main Info -->
+            <div class="detail-main">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="resource-info-header">
+                            <div class="resource-category">
+                                <span>📚</span>
+                                <span class="badge">{{ resource.category|title }}</span>
+                            </div>
+                            {% if resource.progress == 100 %}
+                            <div class="completed-badge">
+                                <span>✓</span> Completed
+                            </div>
+                            {% endif %}
+                        </div>
+                        <h1 class="card-title" style="font-size: 2rem;">{{ resource.title }}</h1>
+                        <p class="card-description">{{ resource.description|default:"No description provided." }}</p>
+                    </div>
+                </div>
+
+                <!-- Update Progress -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Update Progress</h2>
+                        <p class="card-description">Adjust your progress as you continue learning.</p>
+                    </div>
+                    <div class="card-content">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="progress-update">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span>Current Progress</span>
+                                    <strong>{{ resource.progress }}%</strong>
+                                </div>
+
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: {{ resource.progress }}%;"></div>
+                                </div>
+
+                                <input type="range" name="progress" min="0" max="100" value="{{ resource.progress }}" class="slider w-full mt-4">
+
+                                <div class="progress-actions mt-4">
+                                    <button type="submit" name="update_progress" class="btn btn-primary">Update Progress</button>
+                                    {% if resource.progress < 100 %}
+                                        <button type="submit" name="mark_completed" class="btn btn-outline">Mark as Completed</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Sidebar Info -->
+            <div class="detail-sidebar">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title text-lg">Resource Info</h3>
+                    </div>
+                    <div class="card-content space-y-4">
+                        <div class="info-item">
+                            <span class="info-icon">📅</span>
+                            <div class="info-content">
+                                <p>Started</p>
+                                <span>{{ resource.created_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon">🕒</span>
+                            <div class="info-content">
+                                <p>Last Updated</p>
+                                <span>{{ resource.updated_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+
+                        <div style="padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: {{ resource.progress }}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title text-lg">Quick Actions</h3>
+                    </div>
+                    <div class="card-content quick-actions">
+                        <form method="post" style="display:grid;gap:0.5rem;">
+                            {% csrf_token %}
+                            <input type="hidden" name="update_progress" value="1">
+                            <button class="btn btn-outline" name="progress" value="0">Reset Progress</button>
+                            <button class="btn btn-outline" name="progress" value="25">Set to 25%</button>
+                            <button class="btn btn-outline" name="progress" value="50">Set to 50%</button>
+                            <button class="btn btn-outline" name="progress" value="75">Set to 75%</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
