@@ -206,6 +206,7 @@ No credentials or secrets should ever be committed to Git.
 
 Use environment variables for sensitive data (MySQL, secret key).
 
+
 🧑‍💻 Author
 
 Fadilah Abdulkadir
