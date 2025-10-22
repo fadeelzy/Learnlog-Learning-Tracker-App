@@ -88,12 +88,19 @@ pip install -r requirements.txt
 Create a .env file in the project root and add:
 
 SECRET_KEY=your_django_secret_key
+
 DEBUG=True
+
 DATABASE_NAME=learn_db
+
 DATABASE_USER=root
+
 DATABASE_PASSWORD=your_password
+
 DATABASE_HOST=localhost
+
 DATABASE_PORT=3306
+
 
 5. Apply Migrations
 python manage.py makemigrations
@@ -198,6 +205,15 @@ Push and open a Pull Request
 No credentials or secrets should ever be committed to Git.
 
 Use environment variables for sensitive data (MySQL, secret key).
+
+🧑‍💻 Author
+
+Fadilah Abdulkadir
+
+💼 Site Reliability Engineer | AWS Cloud Solutions Architect | Backend Developer | Python and Django
+
+📧 [fadeelzy@gmail.com] 
+🌐 [https://www.linkedin.com/in/fadilah-abdulkadir/]
 
 📜 License
 
