@@ -1,4 +1,4 @@
-# Use official Python image
+# Use official Python image 
 FROM python:3.11-slim
 
 # Set working directory
@@ -27,8 +27,8 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy project files
 COPY . /app/
 
-# Expose port
+# Expose port 
 EXPOSE 8000
 
-# Default command
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Run Gunicorn server
+CMD gunicorn learnproject.wsgi:application --bind 0.0.0.0:$PORT
