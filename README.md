@@ -60,7 +60,7 @@ Backend	Django (Python 3.x)
 
 Frontend	HTML5, CSS3, JavaScript
 
-Database	MySQL (aiven)
+Database	POSTGRESQL (Render)
 
 Auth	Django’s built-in authentication system
 
