@@ -1,6 +1,6 @@
 🌱 LearnLog — Track Your Learning Journey
 
-A modern Django + MySQL web app that helps learners track, manage, and visualize their personal learning progress across books, courses, and tutorials.
+A modern Django + POSTGRESQL web app that helps learners track, manage, and visualize their personal learning progress across books, courses, and tutorials.
 
 
 
@@ -44,8 +44,7 @@ Dynamic, mobile-friendly interface with smooth transitions
 
 One-page authentication (toggle between login and signup)
 
-
-🗄️ MySQL-Powered Database
+POSTGRESQL hosted on render
 
 
 Relational storage for user data and learning resources
@@ -65,7 +64,7 @@ Database	MySQL
 
 Auth	Django’s built-in authentication system
 
-Hosting (optional)	Render / Railway / DigitalOcean
+Hosting (optional)	Render 
 
 Version Control	Git + GitHub
 
